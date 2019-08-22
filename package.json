@@ -1,0 +1,22 @@
+{
+  "name": "gmaps-address-locator",
+  "version": "1.0.0",
+  "description": "Google maps based utility allowing locating of users addresses",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "rollup -c",
+    "watch": "rollup -c --watch"
+  },
+  "author": "Ammar Rayess",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-private-methods": "^7.4.4",
+    "@babel/preset-env": "^7.5.5",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  },
+  "dependencies": {}
+}
