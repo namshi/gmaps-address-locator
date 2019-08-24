@@ -1,6 +1,4 @@
-import gmapsAddressLocator from '../dist/bundle.js';
-console.log(gmapsAddressLocator);
-return;
+import gmapsAddressLocator from 'gmaps-address-locator';
 
 let test = new gmapsAddressLocator('map', {
 	locale: 'AE',
