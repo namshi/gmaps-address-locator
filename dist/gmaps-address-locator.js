@@ -53,8 +53,8 @@ var gmapsAddressLocator = (function () {
           locale: 'SA',
           mobileView: false,
           initialPosition: null,
-          autocompleteFieldId: 'gmap-autocomplete-input',
-          recenterBtnId: 'gmap-recenter-btn',
+          autocompleteFieldId: null,
+          recenterBtnId: null,
           secondaryActionBtn: null,
           confirmBtn: null
         }
@@ -72,7 +72,10 @@ var gmapsAddressLocator = (function () {
       this.initMap();
       this.initInfoWindow();
       this.initMarker();
-      this.initAutocomplete();
+
+      if (this.options.autocompleteFieldId) {
+        this.initAutocomplete();
+      }
 
       if (this.options.secondaryActionBtn) {
         this.addSecondaryActionBtn();
@@ -109,10 +112,8 @@ var gmapsAddressLocator = (function () {
             _this.goToPoint(loc.latLng);
           });
           google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
-            _this.autocompleteInputField.classList.remove('hidden');
-
-            _this.centerControlBtn.classList.remove('hidden');
-
+            _this.autocompleteInputField && _this.autocompleteInputField.classList.remove('hidden');
+            _this.centerControlBtn && _this.centerControlBtn.classList.remove('hidden');
             _this.confirmBtn && _this.confirmBtn.classList.remove('hidden');
             _this.secondaryActionBtn && _this.secondaryActionBtn.classList.remove('hidden');
           });
@@ -147,32 +148,36 @@ var gmapsAddressLocator = (function () {
       value: function initAutocomplete() {
         var _this3 = this;
 
-        // Setup the autocomplete field and add it to map
-        var options = {
-          componentRestrictions: {
-            country: this.options.locale
-          }
-        };
-        this.autocompleteInputField = document.getElementById(this.options.autocompleteFieldId);
-        this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.autocompleteInputField);
-        var autocomplete = new google.maps.places.Autocomplete(this.autocompleteInputField, options);
-        autocomplete.setFields(['name', 'formatted_address', 'geometry']); // Callback for search field value change
+        try {
+          // Setup the autocomplete field and add it to map
+          var options = {
+            componentRestrictions: {
+              country: this.options.locale
+            }
+          };
+          this.autocompleteInputField = document.getElementById(this.options.autocompleteFieldId);
+          this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.autocompleteInputField);
+          var autocomplete = new google.maps.places.Autocomplete(this.autocompleteInputField, options);
+          autocomplete.setFields(['name', 'formatted_address', 'geometry']); // Callback for search field value change
 
-        autocomplete.addListener('place_changed', function () {
-          var place = autocomplete.getPlace();
+          autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
 
-          _this3.map.setZoom(14);
+            _this3.map.setZoom(14);
 
-          _this3.map.panTo(place.geometry.location);
+            _this3.map.panTo(place.geometry.location);
 
-          _this3.marker && _this3.marker.setPosition(place.geometry.location);
+            _this3.marker && _this3.marker.setPosition(place.geometry.location);
 
-          if (_this3.infoWindow) {
-            _this3.infoWindow.setContent(place.name);
+            if (_this3.infoWindow) {
+              _this3.infoWindow.setContent(place.name);
 
-            _this3.infoWindow.setPosition(place.geometry.location);
-          }
-        });
+              _this3.infoWindow.setPosition(place.geometry.location);
+            }
+          });
+        } catch (e) {
+          console.error(e);
+        }
       }
     }, {
       key: "initRecenter",
@@ -180,12 +185,16 @@ var gmapsAddressLocator = (function () {
         var _this4 = this;
 
         // Add recenter button to map
-        this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
-        this.centerControlBtn.index = 1;
-        this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
-        this.centerControlBtn.addEventListener('click', function () {
-          return _this4.goToPoint(pos);
-        });
+        try {
+          this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
+          this.centerControlBtn.index = 1;
+          this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
+          this.centerControlBtn.addEventListener('click', function () {
+            return _this4.goToPoint(pos);
+          });
+        } catch (e) {
+          console.error(e);
+        }
       }
     }, {
       key: "addSecondaryActionBtn",
@@ -230,7 +239,9 @@ var gmapsAddressLocator = (function () {
               lng: position.coords.longitude
             }; // Add Recenter button
 
-            _this6.initRecenter(); // Initial locating
+            if (_this6.options.recenterBtnId) {
+              _this6.initRecenter();
+            } // Initial locating
 
 
             _this6.goToPoint(pos);

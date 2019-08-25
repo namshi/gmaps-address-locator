@@ -3,8 +3,8 @@ class gmapsAddressLocator {
 		locale: 'SA',
 		mobileView: false,
 		initialPosition: null,
-		autocompleteFieldId: 'gmap-autocomplete-input',
-		recenterBtnId: 'gmap-recenter-btn',
+		autocompleteFieldId: null,
+		recenterBtnId: null,
 		secondaryActionBtn: null,
 		confirmBtn: null
 	}
@@ -22,7 +22,10 @@ class gmapsAddressLocator {
 		this.initMap();
 		this.initInfoWindow();
 		this.initMarker();
-		this.initAutocomplete();
+
+		if (this.options.autocompleteFieldId) {
+			this.initAutocomplete();
+		}
 
 		if (this.options.secondaryActionBtn) {
 			this.addSecondaryActionBtn();
@@ -57,8 +60,8 @@ class gmapsAddressLocator {
 			});
 
 			google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => {
-				this.autocompleteInputField.classList.remove('hidden');
-				this.centerControlBtn.classList.remove('hidden');
+				this.autocompleteInputField && this.autocompleteInputField.classList.remove('hidden');
+				this.centerControlBtn && this.centerControlBtn.classList.remove('hidden');
 				this.confirmBtn && this.confirmBtn.classList.remove('hidden');
 				this.secondaryActionBtn && this.secondaryActionBtn.classList.remove('hidden');
 			});
@@ -85,35 +88,43 @@ class gmapsAddressLocator {
 		this.infoWindow = new google.maps.InfoWindow;
 	}
 	initAutocomplete() {
-		// Setup the autocomplete field and add it to map
-		const options = {
-			componentRestrictions: {
-				country: this.options.locale
-			}
-		};
-		this.autocompleteInputField = document.getElementById(this.options.autocompleteFieldId);
-		this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.autocompleteInputField);
-		const autocomplete = new google.maps.places.Autocomplete(this.autocompleteInputField, options);
-		autocomplete.setFields(['name', 'formatted_address', 'geometry']);
-		
-		// Callback for search field value change
-		autocomplete.addListener('place_changed', () => {
-			const place = autocomplete.getPlace();
-			this.map.setZoom(14);
-			this.map.panTo(place.geometry.location);
-			this.marker && this.marker.setPosition(place.geometry.location);
-			if (this.infoWindow) {
-				this.infoWindow.setContent(place.name);
-				this.infoWindow.setPosition(place.geometry.location);
-			}
-		});
+		try {
+			// Setup the autocomplete field and add it to map
+			const options = {
+				componentRestrictions: {
+					country: this.options.locale
+				}
+			};
+			this.autocompleteInputField = document.getElementById(this.options.autocompleteFieldId);
+			this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.autocompleteInputField);
+			const autocomplete = new google.maps.places.Autocomplete(this.autocompleteInputField, options);
+			autocomplete.setFields(['name', 'formatted_address', 'geometry']);
+			
+			// Callback for search field value change
+			autocomplete.addListener('place_changed', () => {
+				const place = autocomplete.getPlace();
+				this.map.setZoom(14);
+				this.map.panTo(place.geometry.location);
+				this.marker && this.marker.setPosition(place.geometry.location);
+				if (this.infoWindow) {
+					this.infoWindow.setContent(place.name);
+					this.infoWindow.setPosition(place.geometry.location);
+				}
+			});
+		} catch(e) {
+			console.error(e);
+		}
 	}
 	initRecenter() {
 		// Add recenter button to map
-		this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
-		this.centerControlBtn.index = 1;
-		this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
-		this.centerControlBtn.addEventListener('click', () => this.goToPoint(pos));
+		try {
+			this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
+			this.centerControlBtn.index = 1;
+			this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
+			this.centerControlBtn.addEventListener('click', () => this.goToPoint(pos));
+		} catch(e) {
+			console.error(e);
+		}
 	}
 	addSecondaryActionBtn() {
 		this.secondaryActionBtn = document.getElementById(this.options.secondaryActionBtn);
@@ -147,7 +158,9 @@ class gmapsAddressLocator {
 				};
 
 				// Add Recenter button
-				this.initRecenter();
+				if (this.options.recenterBtnId) {
+					this.initRecenter();
+				}
 				
 				// Initial locating
 				this.goToPoint(pos);
