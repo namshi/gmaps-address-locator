@@ -115,7 +115,7 @@ class gmapsAddressLocator {
 			console.error(e);
 		}
 	}
-	initRecenter() {
+	initRecenter(pos) {
 		// Add recenter button to map
 		try {
 			this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
@@ -159,7 +159,7 @@ class gmapsAddressLocator {
 
 				// Add Recenter button
 				if (this.options.recenterBtnId) {
-					this.initRecenter();
+					this.initRecenter(pos);
 				}
 				
 				// Initial locating

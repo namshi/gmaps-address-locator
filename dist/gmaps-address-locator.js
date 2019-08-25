@@ -181,7 +181,7 @@ var gmapsAddressLocator = (function () {
       }
     }, {
       key: "initRecenter",
-      value: function initRecenter() {
+      value: function initRecenter(pos) {
         var _this4 = this;
 
         // Add recenter button to map
@@ -240,7 +240,7 @@ var gmapsAddressLocator = (function () {
             }; // Add Recenter button
 
             if (_this6.options.recenterBtnId) {
-              _this6.initRecenter();
+              _this6.initRecenter(pos);
             } // Initial locating
 
 
