@@ -5,7 +5,7 @@ export default {
   input: 'src/main.js',
   output: {
     file: 'dist/gmaps-address-locator.js',
-    format: 'cjs',
+    format: 'iife',
     name: 'gmapsAddressLocator'
   },
   plugins: [
