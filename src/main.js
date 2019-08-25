@@ -1,23 +1,22 @@
 class gmapsAddressLocator {
+	#defaultOptions = {
+		locale: 'SA',
+		mobileView: false,
+		initialPosition: null,
+		autocompleteFieldId: 'gmap-autocomplete-input',
+		recenterBtnId: 'gmap-recenter-btn',
+		secondaryActionBtn: null,
+		confirmBtn: null
+	}
 	constructor(mapElId = null, options = {}, userMapSettings = {}) {
 		if (!mapElId) {
 			console.error("Please specify map element id");
 			return false;
 		}
 
-		const defaultOptions = {
-			locale: 'SA',
-			mobileView: false,
-			initialPosition: null,
-			autocompleteFieldId: 'gmap-autocomplete-input',
-			recenterBtnId: 'gmap-recenter-btn',
-			secondaryActionBtn: null,
-			confirmBtn: null
-		}
-
 		this.selectedLocation = null;
 		this.mapElId = mapElId;
-		this.options = Object.assign({}, defaultOptions, options);
+		this.options = Object.assign({}, this.#defaultOptions, options);
 		this.userMapSettings = userMapSettings;
 		
 		this.initMap();
@@ -162,22 +161,8 @@ class gmapsAddressLocator {
 			console.warn("Browser doesn't support geolocation");
 		}
 	}
-	setSelectedLocation(pos) {
-		let latLng = {};
-
-		if (typeof(pos.lat) === "function") {
-			latLng = {
-				lat: pos.lat(),
-				lng: pos.lng()
-			}
-		} else {
-			latLng = {
-				lat: pos.lat,
-				lng: pos.lng
-			}
-		}
-
-		this.selectedLocation = latLng;
+	setSelectedLocation(location) {
+		this.selectedLocation = location;
 	}
 	getSelectedLocation() {
 		return this.selectedLocation;
@@ -205,7 +190,7 @@ class gmapsAddressLocator {
           this.infoWindow.setContent(result.formatted_address);
           this.infoWindow.setPosition(pos);
           this.infoWindow.open(this.map, this.marker);
-          this.setSelectedLocation(pos);
+          this.setSelectedLocation(result);
         } else {
           console.log('No results found');
         }
