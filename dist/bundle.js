@@ -120,28 +120,9 @@ function () {
       }
     }
   }, {
-    key: "setInitialCenter",
-    value: function setInitialCenter() {
-      var _this2 = this;
-
-      var geocoder = new google.maps.Geocoder();
-      var locale = this.options.locale;
-      geocoder.geocode({
-        componentRestrictions: {
-          country: locale
-        }
-      }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          _this2.map.setCenter(results[0].geometry.location);
-        } else {
-          console.error("Could not find location: " + locale);
-        }
-      });
-    }
-  }, {
     key: "initMarker",
     value: function initMarker() {
-      var _this3 = this;
+      var _this2 = this;
 
       this.marker = new google.maps.Marker({
         map: this.map,
@@ -149,10 +130,10 @@ function () {
         animation: google.maps.Animation.DROP
       });
       this.marker.addListener('dragstart', function () {
-        _this3.infoWindow.close();
+        _this2.infoWindow.close();
       });
       this.marker.addListener('dragend', function (loc) {
-        _this3.goToPoint(loc.latLng);
+        _this2.goToPoint(loc.latLng);
       });
     }
   }, {
@@ -163,7 +144,7 @@ function () {
   }, {
     key: "initAutocomplete",
     value: function initAutocomplete() {
-      var _this4 = this;
+      var _this3 = this;
 
       // Setup the autocomplete field and add it to map
       var options = {
@@ -179,17 +160,30 @@ function () {
       autocomplete.addListener('place_changed', function () {
         var place = autocomplete.getPlace();
 
-        _this4.map.setZoom(14);
+        _this3.map.setZoom(14);
 
-        _this4.map.panTo(place.geometry.location);
+        _this3.map.panTo(place.geometry.location);
 
-        _this4.marker && _this4.marker.setPosition(place.geometry.location);
+        _this3.marker && _this3.marker.setPosition(place.geometry.location);
 
-        if (_this4.infoWindow) {
-          _this4.infoWindow.setContent(place.name);
+        if (_this3.infoWindow) {
+          _this3.infoWindow.setContent(place.name);
 
-          _this4.infoWindow.setPosition(place.geometry.location);
+          _this3.infoWindow.setPosition(place.geometry.location);
         }
+      });
+    }
+  }, {
+    key: "initRecenter",
+    value: function initRecenter() {
+      var _this4 = this;
+
+      // Add recenter button to map
+      this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
+      this.centerControlBtn.index = 1;
+      this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
+      this.centerControlBtn.addEventListener('click', function () {
+        return _this4.goToPoint(pos);
       });
     }
   }, {
@@ -205,16 +199,22 @@ function () {
       this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.confirmBtn);
     }
   }, {
-    key: "initRecenter",
-    value: function initRecenter() {
+    key: "setInitialCenter",
+    value: function setInitialCenter() {
       var _this5 = this;
 
-      // Add recenter button to map
-      this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
-      this.centerControlBtn.index = 1;
-      this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
-      this.centerControlBtn.addEventListener('click', function () {
-        return _this5.goToPoint(pos);
+      var geocoder = new google.maps.Geocoder();
+      var locale = this.options.locale;
+      geocoder.geocode({
+        componentRestrictions: {
+          country: locale
+        }
+      }, function (results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          _this5.map.setCenter(results[0].geometry.location);
+        } else {
+          console.error("Could not find location: " + locale);
+        }
       });
     }
   }, {

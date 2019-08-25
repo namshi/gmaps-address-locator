@@ -66,21 +66,6 @@ class gmapsAddressLocator {
 			console.error(e);
 		}
 	}
-	setInitialCenter() {
-		const geocoder = new google.maps.Geocoder;
-		const locale = this.options.locale;
-		geocoder.geocode({
-			componentRestrictions: {
-		    country: locale
-		  }
-		}, (results, status) => {
-			if (status == google.maps.GeocoderStatus.OK) {
-				this.map.setCenter(results[0].geometry.location);
-			} else {
-				console.error("Could not find location: " + locale);
-			}
-		});
-	}
 	initMarker() {
 		this.marker = new google.maps.Marker({
 			map: this.map,
@@ -123,6 +108,13 @@ class gmapsAddressLocator {
 			}
 		});
 	}
+	initRecenter() {
+		// Add recenter button to map
+		this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
+		this.centerControlBtn.index = 1;
+		this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
+		this.centerControlBtn.addEventListener('click', () => this.goToPoint(pos));
+	}
 	addSecondaryActionBtn() {
 		this.secondaryActionBtn = document.getElementById(this.options.secondaryActionBtn);
 		this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.secondaryActionBtn);
@@ -131,12 +123,20 @@ class gmapsAddressLocator {
 		this.confirmBtn = document.getElementById(this.options.confirmBtn);
 		this.map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(this.confirmBtn);
 	}
-	initRecenter() {
-		// Add recenter button to map
-		this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
-		this.centerControlBtn.index = 1;
-		this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
-		this.centerControlBtn.addEventListener('click', () => this.goToPoint(pos));
+	setInitialCenter() {
+		const geocoder = new google.maps.Geocoder;
+		const locale = this.options.locale;
+		geocoder.geocode({
+			componentRestrictions: {
+		    country: locale
+		  }
+		}, (results, status) => {
+			if (status == google.maps.GeocoderStatus.OK) {
+				this.map.setCenter(results[0].geometry.location);
+			} else {
+				console.error("Could not find location: " + locale);
+			}
+		});
 	}
 	geoCodeLocation() {
 		if (navigator.geolocation) {
