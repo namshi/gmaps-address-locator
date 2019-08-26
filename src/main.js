@@ -215,6 +215,11 @@ class gmapsAddressLocator {
 		}
 		result.formatted_address2 = address;
 
+		const foundCity = res['address_components'].find(item => item.types.indexOf('administrative_area_level_1') > -1 );
+		if (foundCity) {
+			result.city = foundCity.short_name || '';
+		}
+
 		this.map.setZoom(14);
     this.map.panTo(pos);
     this.marker&& this.marker.setPosition(pos);
