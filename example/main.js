@@ -1,4 +1,4 @@
-import gmapsAddressLocator from '../dist/gmaps-address-locator';
+import gmapsAddressLocator from 'gmaps-address-locator';
 
 let test = new gmapsAddressLocator('map', {
 	locale: 'AE',

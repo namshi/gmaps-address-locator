@@ -1,9 +1,9 @@
 {
   "name": "gmaps-address-locator",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Google maps based utility allowing locating of users addresses",
-  "main": "dist/gmaps-address-locator.js",
-  "files": ["dist/gmaps-address-locator.js"],
+  "main": "dist/cjs/gmaps-address-locator.js",
+  "files": ["dist/iife/gmaps-address-locator.js", "dist/cjs/gmaps-address-locator.js"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "rollup -c",
