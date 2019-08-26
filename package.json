@@ -1,6 +1,6 @@
 {
   "name": "gmaps-address-locator",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Google maps based utility allowing locating of users addresses",
   "main": "dist/cjs/gmaps-address-locator.js",
   "files": [
