@@ -1,9 +1,12 @@
 {
   "name": "gmaps-address-locator",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Google maps based utility allowing locating of users addresses",
   "main": "dist/cjs/gmaps-address-locator.js",
-  "files": ["dist/iife/gmaps-address-locator.js", "dist/cjs/gmaps-address-locator.js"],
+  "files": [
+    "dist/iife/gmaps-address-locator.js",
+    "dist/cjs/gmaps-address-locator.js"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "rollup -c",
@@ -17,6 +20,7 @@
     "@babel/plugin-proposal-private-methods": "^7.4.4",
     "@babel/preset-env": "^7.5.5",
     "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-babel-minify": "^9.0.0",
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "dependencies": {}
