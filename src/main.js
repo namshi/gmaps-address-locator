@@ -230,7 +230,7 @@ class gmapsAddressLocator {
     }
 
     this.setSelectedLocation(result);
-    this.onPointSelection && this.onPointSelection(result);
+    this.onPointSelectionFn && this.onPointSelectionFn(result);
 	}
 	cleanAddress(address) {
 		return address.split('-')[0];
@@ -254,7 +254,7 @@ class gmapsAddressLocator {
 		});
 	}
 	onPointSelection(fn) {
-		this.onPointSelection = fn;
+		this.onPointSelectionFn = fn;
 	}
 }
 
