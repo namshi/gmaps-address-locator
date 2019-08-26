@@ -38,7 +38,7 @@ class gmapsAddressLocator {
 		if (this.options.initialPosition) {
 			this.goToPoint(this.options.initialPosition);
 		} else {
-			this.geoCodeLocation();
+			this.getNavigatorLocation();
 		}
 	}
 	initMap() {
@@ -98,18 +98,13 @@ class gmapsAddressLocator {
 			this.autocompleteInputField = document.getElementById(this.options.autocompleteFieldId);
 			this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.autocompleteInputField);
 			const autocomplete = new google.maps.places.Autocomplete(this.autocompleteInputField, options);
-			autocomplete.setFields(['name', 'formatted_address', 'geometry']);
+			autocomplete.setFields(['name', 'formatted_address', 'address_components', 'geometry']);
 			
 			// Callback for search field value change
 			autocomplete.addListener('place_changed', () => {
 				const place = autocomplete.getPlace();
-				this.map.setZoom(14);
-				this.map.panTo(place.geometry.location);
-				this.marker && this.marker.setPosition(place.geometry.location);
-				if (this.infoWindow) {
-					this.infoWindow.setContent(place.name);
-					this.infoWindow.setPosition(place.geometry.location);
-				}
+				this.updateLocationOnMap(place.geometry.location, place.name);
+        this.setSelectedLocation(place);
 			});
 		} catch(e) {
 			console.error(e);
@@ -149,7 +144,7 @@ class gmapsAddressLocator {
 			}
 		});
 	}
-	geoCodeLocation() {
+	getNavigatorLocation() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(position => {
 				const pos = {
@@ -197,12 +192,7 @@ class gmapsAddressLocator {
             return;
           }
 
-          this.map.setZoom(14);
-          this.map.panTo(pos);
-          this.marker.setPosition(pos);
-          this.infoWindow.setContent(this.cleanAddress(result.formatted_address));
-          this.infoWindow.setPosition(pos);
-          this.infoWindow.open(this.map, this.marker);
+          this.updateLocationOnMap(pos, this.cleanAddress(result.formatted_address));
           this.setSelectedLocation(result);
         } else {
           console.log('No results found');
@@ -211,6 +201,16 @@ class gmapsAddressLocator {
         console.log('Geocoder failed due to: ' + status);
       }
     });
+	}
+	updateLocationOnMap(pos, address) {
+		this.map.setZoom(14);
+    this.map.panTo(pos);
+    this.marker&& this.marker.setPosition(pos);
+    if (this.infoWindow) {
+      this.infoWindow.setContent(address);
+      this.infoWindow.setPosition(pos);
+      this.infoWindow.open(this.map, this.marker);
+    }
 	}
 	cleanAddress(address) {
 		return address.split('-')[0];
