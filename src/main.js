@@ -200,7 +200,7 @@ class gmapsAddressLocator {
           this.map.setZoom(14);
           this.map.panTo(pos);
           this.marker.setPosition(pos);
-          this.infoWindow.setContent(`${result.address_components[0].short_name}, ${result.address_components[1].short_name}`);
+          this.infoWindow.setContent(this.cleanAddress(result.formatted_address));
           this.infoWindow.setPosition(pos);
           this.infoWindow.open(this.map, this.marker);
           this.setSelectedLocation(result);
@@ -211,6 +211,9 @@ class gmapsAddressLocator {
         console.log('Geocoder failed due to: ' + status);
       }
     });
+	}
+	cleanAddress(address) {
+		return address.split('-')[0];
 	}
 	showMap() {
 		this.mapEl.style.display = 'block';

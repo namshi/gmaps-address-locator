@@ -14,6 +14,6 @@
     "parcel-bundler": "^1.12.3"
   },
   "dependencies": {
-    "gmaps-address-locator": "^1.0.11"
+    "gmaps-address-locator": "^1.0.14"
   }
 }
