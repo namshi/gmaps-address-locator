@@ -194,6 +194,7 @@ class gmapsAddressLocator {
 
 	          if (countryObj.short_name !== locale) {
 	            alert(`Location out of ${locale} country boundary`);
+	            this.updateLocationOnMap(this.selectedLocation);
 	            return;
 	          }
 	        }
@@ -209,16 +210,11 @@ class gmapsAddressLocator {
 	}
 	updateLocationOnMap(result) {
 		const pos = result.geometry.location;
-		let address = this.cleanAddress(result.formatted_address);
-		if (result.name) {
-			address = `${result.name}, ${address}`
-		}
+		const address = this.cleanAddress(result.formatted_address, result.name);
+		
+		result.lngLat =this.formatLngLat(result);
 		result.formatted_address2 = address;
-
-		const foundCity = result.address_components.find(item => item.types.indexOf('administrative_area_level_1') > -1 );
-		if (foundCity) {
-			result.city = foundCity.short_name || '';
-		}
+		result.city = this.getCityName(result);
 
 		this.map.setZoom(14);
     this.map.panTo(pos);
@@ -232,8 +228,28 @@ class gmapsAddressLocator {
     this.setSelectedLocation(result);
     this.onPointSelectionFn && this.onPointSelectionFn(result);
 	}
-	cleanAddress(address) {
-		return address.split('-')[0];
+	cleanAddress(address, name) {
+		let _address = address.split('-')[0];
+		if (name && name.toLowerCase().trim() !== _address.toLowerCase().trim()) {
+			_address = `${name}, ${_address}`
+		}
+		return _address;
+	}
+	getCityName(location) {
+		const foundCity = location.address_components.find(item => item.types.indexOf('administrative_area_level_1') > -1 );
+		let result = '';
+		if (foundCity) {
+			result = foundCity.short_name || '';
+		}
+		return result;
+	}
+	formatLngLat(location) {
+		const lngLat = {
+			lng: parseFloat(location.geometry.location.lng().toFixed(6)),
+			lat: parseFloat(location.geometry.location.lat().toFixed(6)),
+		};
+
+		return lngLat;
 	}
 	showMap() {
 		this.mapEl.style.display = 'block';
