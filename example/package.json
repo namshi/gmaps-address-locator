@@ -12,8 +12,5 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "parcel-bundler": "^1.12.3"
-  },
-  "dependencies": {
-    "gmaps-address-locator": "^1.0.14"
   }
 }

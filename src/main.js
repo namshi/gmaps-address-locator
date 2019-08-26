@@ -1,6 +1,6 @@
 class gmapsAddressLocator {
 	#defaultOptions = {
-		locale: 'SA',
+		locale: null,
 		mobileView: false,
 		initialPosition: null,
 		autocompleteFieldId: null,
@@ -90,11 +90,14 @@ class gmapsAddressLocator {
 	initAutocomplete() {
 		try {
 			// Setup the autocomplete field and add it to map
-			const options = {
-				componentRestrictions: {
+			const options = {};
+
+			if (this.options.locale) {
+				options.componentRestrictions = {
 					country: this.options.locale
 				}
-			};
+			}
+
 			this.autocompleteInputField = document.getElementById(this.options.autocompleteFieldId);
 			this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(this.autocompleteInputField);
 			const autocomplete = new google.maps.places.Autocomplete(this.autocompleteInputField, options);
@@ -103,8 +106,7 @@ class gmapsAddressLocator {
 			// Callback for search field value change
 			autocomplete.addListener('place_changed', () => {
 				const place = autocomplete.getPlace();
-				this.updateLocationOnMap(place.geometry.location, place.name);
-        this.setSelectedLocation(place);
+				this.updateLocationOnMap(place);
 			});
 		} catch(e) {
 			console.error(e);
@@ -132,11 +134,13 @@ class gmapsAddressLocator {
 	setInitialCenter() {
 		const geocoder = new google.maps.Geocoder;
 		const locale = this.options.locale;
-		geocoder.geocode({
-			componentRestrictions: {
-		    country: locale
-		  }
-		}, (results, status) => {
+		const options = {};
+		if (locale) {
+			options.componentRestrictions = {
+				country: locale
+			}
+		}
+		geocoder.geocode(options, (results, status) => {
 			if (status == google.maps.GeocoderStatus.OK) {
 				this.map.setCenter(results[0].geometry.location);
 			} else {
@@ -185,15 +189,16 @@ class gmapsAddressLocator {
       	let result = results[0];
         if (result) {
         	const locale = this.options.locale;
-          const countryObj = result.address_components.find(x => x.types.indexOf('country') > -1);
+        	if (locale) {
+	          const countryObj = result.address_components.find(x => x.types.indexOf('country') > -1);
 
-          if (countryObj.short_name !== locale) {
-            alert(`Location out of ${locale} country boundary`);
-            return;
-          }
+	          if (countryObj.short_name !== locale) {
+	            alert(`Location out of ${locale} country boundary`);
+	            return;
+	          }
+	        }
 
-          this.updateLocationOnMap(pos, this.cleanAddress(result.formatted_address));
-          this.setSelectedLocation(result);
+          this.updateLocationOnMap(result);
         } else {
           console.log('No results found');
         }
@@ -202,7 +207,14 @@ class gmapsAddressLocator {
       }
     });
 	}
-	updateLocationOnMap(pos, address) {
+	updateLocationOnMap(result) {
+		const pos = result.geometry.location;
+		let address = this.cleanAddress(result.formatted_address);
+		if (result.name) {
+			address = `${result.name}, ${address}`
+		}
+		result.formatted_address2 = address;
+
 		this.map.setZoom(14);
     this.map.panTo(pos);
     this.marker&& this.marker.setPosition(pos);
@@ -211,6 +223,9 @@ class gmapsAddressLocator {
       this.infoWindow.setPosition(pos);
       this.infoWindow.open(this.map, this.marker);
     }
+
+    this.setSelectedLocation(result);
+    this.onPointSelection && this.onPointSelection(result);
 	}
 	cleanAddress(address) {
 		return address.split('-')[0];
@@ -232,6 +247,9 @@ class gmapsAddressLocator {
 		this.secondaryActionBtn.addEventListener('click', e => {
 			fn();
 		});
+	}
+	onPointSelection(fn) {
+		this.onPointSelection = fn;
 	}
 }
 

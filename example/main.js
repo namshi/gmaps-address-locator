@@ -10,3 +10,4 @@ let test = new gmapsAddressLocator('map', {
 
 test.onConfirm(res => console.log('Confirmed: ', res));
 test.onSecondaryAction(() => console.log('clicked'));
+test.onPointSelection(res => console.log(res));
