@@ -6,7 +6,8 @@ class gmapsAddressLocator {
 		autocompleteFieldId: null,
 		locateMeBtnId: null,
 		secondaryActionBtn: null,
-		confirmBtn: null
+		confirmBtn: null,
+		mapPanZoomLevel: 14
 	}
 	constructor(mapElId = null, options = {}, userMapSettings = {}) {
 		if (!mapElId) {
@@ -57,6 +58,10 @@ class gmapsAddressLocator {
 
 			this.map.addListener('click', loc => {
 				this.goToPoint(loc.latLng);
+			});
+
+			this.map.addListener('zoom_changed', () => {
+				this.options.mapPanZoomLevel = this.map.getZoom();
 			});
 
 			google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => {
@@ -216,7 +221,7 @@ class gmapsAddressLocator {
 		result.formatted_address2 = address;
 		result.city = this.getCityName(result);
 
-		this.map.setZoom(14);
+		this.map.setZoom(this.options.mapPanZoomLevel);
     this.map.panTo(pos);
     this.marker&& this.marker.setPosition(pos);
     if (this.infoWindow) {
