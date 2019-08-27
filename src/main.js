@@ -250,8 +250,8 @@ class gmapsAddressLocator {
 	}
 	formatLngLat(location) {
 		const lngLat = {
-			lng: parseFloat(location.geometry.location.lng().toFixed(6)),
-			lat: parseFloat(location.geometry.location.lat().toFixed(6)),
+			lng: location.geometry.location.lng().toFixed(6),
+			lat: location.geometry.location.lat().toFixed(6),
 		};
 
 		return lngLat;
