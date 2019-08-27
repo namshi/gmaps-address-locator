@@ -47,6 +47,7 @@ class gmapsAddressLocator {
 			const defaultMapSettings = {
 				zoom: 6,
 				zoomControl: this.options.mobileView ? false : true,
+				gestureHandling: this.options.mobileView ? 'greedy' : 'cooperative',
 				mapTypeControl: false,
 				streetViewControl: false,
 				fullscreenControl: false
