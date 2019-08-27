@@ -19,7 +19,7 @@ npm i gmaps-address-locator
 
 ## Screenshot
 
-![Gmap-address-locator](https://ibb.co/nBtNNGp][img]https://i.ibb.co/5kwgg0Z/gmaps-Address-Locator.png)
+![Gmap-address-locator](https://i.ibb.co/5kwgg0Z/gmaps-Address-Locator.png)
 
 ## Notes
 
