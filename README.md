@@ -17,6 +17,10 @@
 npm i gmaps-address-locator
 ```
 
+## Screenshot
+
+![Gmap-address-locator](https://ibb.co/nBtNNGp][img]https://i.ibb.co/5kwgg0Z/gmaps-Address-Locator.png)
+
 ## Notes
 
 - Make sure to load the google maps JS api in your app with the appropriate API Key, check google maps JS  documentation for more information. Gmaps address locator will not work if the google maps JS api is not loaded
