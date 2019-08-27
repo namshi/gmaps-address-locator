@@ -4,7 +4,7 @@ class gmapsAddressLocator {
 		mobileView: false,
 		initialPosition: null,
 		autocompleteFieldId: null,
-		recenterBtnId: null,
+		locateMeBtnId: null,
 		secondaryActionBtn: null,
 		confirmBtn: null
 	}
@@ -61,7 +61,7 @@ class gmapsAddressLocator {
 
 			google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => {
 				this.autocompleteInputField && this.autocompleteInputField.classList.remove('hidden');
-				this.centerControlBtn && this.centerControlBtn.classList.remove('hidden');
+				this.locateMeControlBtn && this.locateMeControlBtn.classList.remove('hidden');
 				this.confirmBtn && this.confirmBtn.classList.remove('hidden');
 				this.secondaryActionBtn && this.secondaryActionBtn.classList.remove('hidden');
 			});
@@ -112,13 +112,13 @@ class gmapsAddressLocator {
 			console.error(e);
 		}
 	}
-	initRecenter(pos) {
-		// Add recenter button to map
+	initLocateMe(pos) {
+		// Add locate me button to map
 		try {
-			this.centerControlBtn = document.getElementById(this.options.recenterBtnId);
-			this.centerControlBtn.index = 1;
-			this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.centerControlBtn);
-			this.centerControlBtn.addEventListener('click', () => this.goToPoint(pos));
+			this.locateMeControlBtn = document.getElementById(this.options.locateMeBtnId);
+			this.locateMeControlBtn.index = 1;
+			this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(this.locateMeControlBtn);
+			this.locateMeControlBtn.addEventListener('click', () => this.goToPoint(pos));
 		} catch(e) {
 			console.error(e);
 		}
@@ -156,9 +156,9 @@ class gmapsAddressLocator {
 					lng: position.coords.longitude
 				};
 
-				// Add Recenter button
-				if (this.options.recenterBtnId) {
-					this.initRecenter(pos);
+				// Add locate me button
+				if (this.options.locateMeBtnId) {
+					this.initLocateMe(pos);
 				}
 				
 				// Initial locating
@@ -226,7 +226,7 @@ class gmapsAddressLocator {
     }
 
     this.setSelectedLocation(result);
-    this.onPointSelectionFn && this.onPointSelectionFn(result);
+    this.onLocationSelectionFn && this.onLocationSelectionFn(result);
 	}
 	cleanAddress(address, name) {
 		let _address = address.split('-')[0];
@@ -269,8 +269,8 @@ class gmapsAddressLocator {
 			fn();
 		});
 	}
-	onPointSelection(fn) {
-		this.onPointSelectionFn = fn;
+	onLocationSelection(fn) {
+		this.onLocationSelectionFn = fn;
 	}
 }
 

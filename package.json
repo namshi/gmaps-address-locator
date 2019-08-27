@@ -1,7 +1,7 @@
 {
   "name": "gmaps-address-locator",
-  "version": "1.0.21",
-  "description": "Google maps based utility allowing locating of users addresses",
+  "version": "1.0.22",
+  "description": "A small utility that allows easier integration with google maps to be mainly used to enable users to select their address on the map",
   "main": "dist/cjs/gmaps-address-locator.js",
   "files": [
     "dist/iife/gmaps-address-locator.js",
@@ -14,6 +14,15 @@
   },
   "author": "Ammar Rayess",
   "license": "ISC",
+  "repository": "https://github.com/therayess/gmaps-address-locator",
+  "bugs": {
+    "url": "https://github.com/therayess/gmaps-address-locator/issues"
+  },
+  "keywords": [
+    "javascript",
+    "google",
+    "map"
+  ],
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
