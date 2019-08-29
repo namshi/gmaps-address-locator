@@ -216,7 +216,7 @@ class gmapsAddressLocator {
 	}
 	updateLocationOnMap(result) {
 		const pos = result.geometry.location;
-		const address = this.cleanAddress(result.formatted_address, result.name);
+		const address = this.cleanAddress(result);
 		
 		result.lngLat =this.formatLngLat(result);
 		result.formatted_address2 = address;
@@ -234,11 +234,20 @@ class gmapsAddressLocator {
     this.setSelectedLocation(result);
     this.onLocationSelectionFn && this.onLocationSelectionFn(result);
 	}
-	cleanAddress(address, name) {
+	cleanAddress(location) {
+		let address = location.formatted_address;
+		let name = location.name;
 		let _address = address.split('-')[0];
+
 		if (name && name.toLowerCase().trim() !== _address.toLowerCase().trim()) {
 			_address = `${name}, ${_address}`
 		}
+
+		let sublocality = location.address_components.find(item => item.types.indexOf('sublocality_level_1') > -1);
+		if (sublocality) {
+			_address = `${_address}, ${sublocality.short_name}`;
+		}
+		
 		return _address;
 	}
 	getCityName(location) {
