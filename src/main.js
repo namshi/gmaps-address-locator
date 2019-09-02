@@ -168,7 +168,7 @@ class gmapsAddressLocator {
 				}
 				
 				// Initial locating
-				this.goToPoint(pos);
+				this.goToPoint(pos, true);
 			}, () => {
 				// User denied access to location
 				this.setInitialCenter();
@@ -185,7 +185,7 @@ class gmapsAddressLocator {
 	getSelectedLocation() {
 		return this.selectedLocation;
 	}
-	goToPoint(pos) {
+	goToPoint(pos, isInitial = false) {
 		const geocoder = new google.maps.Geocoder;
 
     geocoder.geocode({
@@ -199,8 +199,12 @@ class gmapsAddressLocator {
 	          const countryObj = result.address_components.find(x => x.types.indexOf('country') > -1);
 
 	          if (countryObj.short_name !== locale) {
-	            alert(`Location out of ${locale} country boundary`);
-	            this.updateLocationOnMap(this.selectedLocation);
+	          	if (isInitial) {
+	          		this.setInitialCenter();
+	          	} else {
+		            alert(`Location out of ${locale} country boundary`);
+		            this.updateLocationOnMap(this.selectedLocation);
+		          }
 	            return;
 	          }
 	        }
