@@ -4,7 +4,7 @@ let test = new gmapsAddressLocator('map', {
 	locale: 'AE',
 	confirmBtn: 'gmap-confirm-btn',
 	secondaryActionBtn: 'gmap-add-manually-btn',
-	recenterBtnId: 'gmap-locate-me-btn',
+	locateMeBtnId: 'gmap-locate-me-btn',
 	autocompleteFieldId: 'gmap-autocomplete-input'
 });
 

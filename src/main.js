@@ -161,11 +161,6 @@ class gmapsAddressLocator {
 					lat: position.coords.latitude,
 					lng: position.coords.longitude
 				};
-
-				// Add locate me button
-				if (this.options.locateMeBtnId) {
-					this.initLocateMe(pos);
-				}
 				
 				// Initial locating
 				this.goToPoint(pos, true);
@@ -208,6 +203,11 @@ class gmapsAddressLocator {
 	            return;
 	          }
 	        }
+
+        	// Add locate me button
+					if (isInitial && this.options.locateMeBtnId) {
+						this.initLocateMe(pos);
+					}
 
           this.updateLocationOnMap(result);
         } else {
