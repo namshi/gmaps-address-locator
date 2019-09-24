@@ -255,7 +255,7 @@ class gmapsAddressLocator {
 		return _address;
 	}
 	getCityName(location) {
-		const foundCity = location.address_components.find(item => item.types.indexOf('locality') > -1 || item.types.indexOf('administrative_area_level_1') > -1 );
+		const foundCity = location.address_components.find(item => item.types.indexOf('locality') > -1);
 		let result = '';
 		if (foundCity) {
 			result = foundCity.short_name || '';
