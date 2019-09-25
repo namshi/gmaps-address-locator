@@ -112,7 +112,7 @@ class gmapsAddressLocator {
 			// Callback for search field value change
 			autocomplete.addListener('place_changed', () => {
 				const place = autocomplete.getPlace();
-				this.updateLocationOnMap(place);
+				this.updateLocationOnMap(place, false);
 			});
 		} catch(e) {
 			console.error(e);
@@ -218,13 +218,17 @@ class gmapsAddressLocator {
       }
     });
 	}
-	updateLocationOnMap(result) {
+	updateLocationOnMap(result, clearAutocomplete = true) {
 		const pos = result.geometry.location;
 		const address = this.cleanAddress(result);
 		
 		result.lngLat =this.formatLngLat(result);
 		result.formatted_address2 = address;
 		result.city = this.getCityName(result);
+
+		if (clearAutocomplete) {
+			this.autocompleteInputField.value = '';
+		}
 
 		this.map.setZoom(this.options.mapPanZoomLevel);
     this.map.panTo(pos);

@@ -1,6 +1,6 @@
 {
   "name": "gmaps-address-locator",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "A small utility that allows easier integration with google maps to be mainly used to enable users to select their address on the map",
   "main": "dist/cjs/gmaps-address-locator.js",
   "files": [
