@@ -8,6 +8,7 @@ let test = new gmapsAddressLocator('map', {
 	autocompleteFieldId: 'gmap-autocomplete-input'
 });
 
+test.onReady(() => console.log('ready'));
 test.onConfirm(res => console.log('Confirmed: ', res));
 test.onSecondaryAction(() => console.log('clicked'));
 test.onLocationSelection(res => console.log(res));

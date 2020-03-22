@@ -75,6 +75,9 @@ const mapSettings = {
 // @param3: google maps settings
 const myMap = new gmapsAddressLocator('map', config, mapSettings);
 
+// Call back function for when everything is initiated and ready to go
+myMap.onReady(() => console.log('Ready to go!'));
+
 // Call back function for the click event of the confirm button
 // Passes the currently selected location result as parameter
 myMap.onConfirm(res => console.log('Confirm button clicked: ', res));

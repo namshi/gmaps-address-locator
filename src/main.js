@@ -70,6 +70,7 @@ class gmapsAddressLocator {
 				this.locateMeControlBtn && this.locateMeControlBtn.classList.remove('hidden');
 				this.confirmBtn && this.confirmBtn.classList.remove('hidden');
 				this.secondaryActionBtn && this.secondaryActionBtn.classList.remove('hidden');
+				this.onReadyFn && this.onReadyFn();
 			});
 		} catch(e) {
 			console.error(e);
@@ -279,6 +280,9 @@ class gmapsAddressLocator {
 	}
 	hideMap() {
 		this.mapEl.style.display = 'none';
+	}
+	onReady(fn) {
+		this.onReadyFn = fn;
 	}
 	onConfirm(fn) {
 		if (!this.confirmBtn) return;
