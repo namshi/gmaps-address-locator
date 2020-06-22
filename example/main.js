@@ -12,3 +12,4 @@ test.onReady(() => console.log('ready'));
 test.onConfirm(res => console.log('Confirmed: ', res));
 test.onSecondaryAction(() => console.log('clicked'));
 test.onLocationSelection(res => console.log(res));
+test.onFail(e => console.log(e));

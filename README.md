@@ -90,6 +90,10 @@ myMap.onSecondaryAction(() => console.log('do something'));
 // Passes the currently selected location result as parameter
 myMap.onLocationSelection(res => console.log(res));
 
+// If initializing the map, the autocomplete field or the locate me button fails, 
+// this hook will be called
+myMap.onFail(error => console.log(error));
+
 // Other helper functions:
 // Shows map
 myMap.showMap();

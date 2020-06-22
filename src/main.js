@@ -74,6 +74,7 @@ class gmapsAddressLocator {
 			});
 		} catch(e) {
 			console.error(e);
+			this.onFailFn && this.onFailFn(e);
 		}
 	}
 	initMarker() {
@@ -117,6 +118,7 @@ class gmapsAddressLocator {
 			});
 		} catch(e) {
 			console.error(e);
+			this.onFailFn && this.onFailFn(e);
 		}
 	}
 	initLocateMe(pos) {
@@ -128,6 +130,7 @@ class gmapsAddressLocator {
 			this.locateMeControlBtn.addEventListener('click', () => this.goToPoint(pos));
 		} catch(e) {
 			console.error(e);
+			this.onFailFn && this.onFailFn(e);
 		}
 	}
 	addSecondaryActionBtn() {
@@ -298,6 +301,9 @@ class gmapsAddressLocator {
 	}
 	onLocationSelection(fn) {
 		this.onLocationSelectionFn = fn;
+	}
+	onFail(fn) {
+		this.onFailFn = fn;
 	}
 }
 
