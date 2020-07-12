@@ -1,6 +1,6 @@
 {
   "name": "gmaps-address-locator",
-  "version": "1.0.36",
+  "version": "1.0.37",
   "description": "A small utility that allows easier integration with google maps to be mainly used to enable users to select their address on the map",
   "main": "dist/cjs/gmaps-address-locator.js",
   "files": [
@@ -14,9 +14,9 @@
   },
   "author": "Ammar Rayess",
   "license": "ISC",
-  "repository": "https://github.com/therayess/gmaps-address-locator",
+  "repository": "https://github.com/namshi/gmaps-address-locator",
   "bugs": {
-    "url": "https://github.com/therayess/gmaps-address-locator/issues"
+    "url": "https://github.com/namshi/gmaps-address-locator/issues"
   },
   "keywords": [
     "javascript",
