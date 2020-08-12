@@ -218,6 +218,9 @@ class gmapsAddressLocator {
           console.log('No results found');
         }
       } else {
+				if (isInitial) {
+					this.onFailFn && this.onFailFn('Geocoder failed due to: ' + status);
+				}
         console.log('Geocoder failed due to: ' + status);
       }
     });
