@@ -114,7 +114,9 @@ class gmapsAddressLocator {
 			// Callback for search field value change
 			autocomplete.addListener('place_changed', () => {
 				const place = autocomplete.getPlace();
-				this.updateLocationOnMap(place, false);
+				if (place.geometry) {
+					this.updateLocationOnMap(place, false);
+				}
 			});
 		} catch(e) {
 			console.error(e);
