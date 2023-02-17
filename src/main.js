@@ -173,7 +173,7 @@ class gmapsAddressLocator {
 			}, () => {
 				// User denied access to location
 				this.setInitialCenter();
-				console.warn('User denied access to location');
+				console.warn('Permission denied to access location');
 			});
 		} else {
 			// Browser doesn't support Geolocation
